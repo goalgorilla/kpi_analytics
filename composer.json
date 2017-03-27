@@ -1,0 +1,19 @@
+{
+  "name": "goalgorilla/kpi_analytics",
+  "description": "Drupal 8 KPI Analytics architecture used in the Open Social Drupal 8 distribution.",
+  "type": "drupal-module",
+  "keywords": [
+    "Open Social",
+    "Drupal",
+    "Module"
+  ],
+  "license": "GPL-2.0+",
+  "homepage": "https://github.com/goalgorilla/kpi_analytics",
+  "minimum-stability": "dev",
+  "require": {
+    "composer/installers": "^1.0"
+  },
+  "extra": {
+    "installer-name": "kpi_analytics"
+  }
+}

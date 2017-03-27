@@ -1,6 +1,6 @@
 name: KPI Analytics
 type: module
-description: Architecture for making Key Performance Indicators for your website.
+description: KPI Analytics architecture used in the Open Social Drupal 8 distribution.
 core: 8.x
 package: Custom
 dependencies:
