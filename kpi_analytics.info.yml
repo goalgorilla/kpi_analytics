@@ -1,0 +1,7 @@
+name: KPI Analytics
+type: module
+description: Architecture for making Key Performance Indicators for your website.
+core: 8.x
+package: Custom
+dependencies:
+  - text
