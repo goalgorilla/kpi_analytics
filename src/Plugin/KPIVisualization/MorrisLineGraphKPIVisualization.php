@@ -32,12 +32,15 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
 
     $xkey = 'x';
     $ykeys = ['y'];
+
     if (count($data) > 0) {
       $ykeys = [];
+
       foreach ($data[0] as $key => $value) {
         $ykeys[] = $key;
       }
-      $xkey = array_pop($ykeys);
+
+      $xkey = array_shift($ykeys);
     }
 
     // Data to render and Morris options.
@@ -47,13 +50,12 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
       'xkey' => $xkey,
       'ykeys' => $ykeys,
       'parseTime' => FALSE,
-      'labels' => ['Active users'],
+      'labels' => ['Active users', 'Total users'],
     ];
 
     // Load the Morris Library.
     $render_array['kpi_analytics']['#attached']['library'][] = 'kpi_analytics/morris';
     $render_array['kpi_analytics']['#attached']['drupalSettings']['kpi_analytics']['morris']['line'][$uuid]['options'] = $options;
-
 
     $html = '<div id="' . $uuid . '" class="morris_line" style="height: 200px" data-colors="#29abe2,#ffc142"></div>';
 
