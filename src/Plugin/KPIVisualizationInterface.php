@@ -17,4 +17,12 @@ interface KPIVisualizationInterface extends PluginInspectionInterface {
    */
   public function render(array $data);
 
+  /**
+   * Set a list with labels for chart.
+   *
+   * @param array $labels
+   *   Array where each value is a label.
+   */
+  public function setLabels(array $labels);
+
 }
