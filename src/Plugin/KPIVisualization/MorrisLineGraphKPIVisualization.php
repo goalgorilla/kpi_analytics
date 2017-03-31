@@ -50,7 +50,7 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
       'xkey' => $xkey,
       'ykeys' => $ykeys,
       'parseTime' => FALSE,
-      'labels' => ['Active users', 'Total users'],
+      'labels' => ['Active users', 'All users'],
     ];
 
     // Load the Morris Library.
