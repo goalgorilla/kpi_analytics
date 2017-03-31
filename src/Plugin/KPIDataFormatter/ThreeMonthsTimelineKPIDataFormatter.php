@@ -56,6 +56,8 @@ class ThreeMonthsTimelineKPIDataFormatter extends KPIDataFormatterBase {
       }
     }
 
+    ksort($formatted_data);
+
     return array_values($formatted_data);
   }
 
