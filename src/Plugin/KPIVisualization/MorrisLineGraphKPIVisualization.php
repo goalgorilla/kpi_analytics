@@ -23,8 +23,6 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
    * {@inheritdoc}
    */
   public function render(array $data) {
-    $render_array = [];
-
     $uuid_service = \Drupal::service('uuid');
     $uuid = $uuid_service->generate();
 
@@ -52,13 +50,26 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
       'plugin' => 'Line',
     ];
 
-    // Load the Morris Library.
-    $render_array['kpi_analytics']['#attached']['library'][] = 'kpi_analytics/morris';
-    $render_array['kpi_analytics']['#attached']['drupalSettings']['kpi_analytics']['morris']['line'][$uuid]['options'] = $options;
-
-    $html = '<div id="' . $uuid . '" class="morris_line" style="height: 200px" data-colors="#29abe2,#ffc142"></div>';
-
-    $render_array['kpi_analytics']['#markup'] = $html;
-    return $render_array;
+    return [
+      '#theme' => 'kpi_analytics_morris_chart',
+      '#type' => 'line',
+      '#uuid' => $uuid,
+      '#attached' => [
+        'library' => [
+          'kpi_analytics/morris',
+        ],
+        'drupalSettings' => [
+          'kpi_analytics' => [
+            'morris' => [
+              'chart' => [
+                $uuid => [
+                  'options' => $options,
+                ],
+              ],
+            ],
+          ],
+        ],
+      ],
+    ];
   }
 }

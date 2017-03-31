@@ -107,3 +107,19 @@ function _kpi_analytics_is_kpi_block(BlockPluginInterface $block) {
   }
   return FALSE;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function kpi_analytics_theme($existing, $type, $theme, $path) {
+  return [
+    'kpi_analytics_morris_chart' => [
+      'template' => 'morris-chart',
+      'path' => $path . '/templates',
+      'variables' => [
+        'type' => NULL,
+        'uuid' => NULL,
+      ],
+    ],
+  ];
+}

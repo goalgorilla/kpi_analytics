@@ -20,7 +20,7 @@ abstract class KPIVisualizationBase extends PluginBase implements KPIVisualizati
    * {@inheritdoc}
    */
   public function render(array $data) {
-    return 'Hello world';
+    return '';
   }
 
   /**
