@@ -32,7 +32,7 @@ class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
     if (count($data) > 0) {
       $ykeys = [];
 
-      foreach ($data[0] as $key => $value) {
+      foreach (reset($data) as $key => $value) {
         $ykeys[] = $key;
       }
 
