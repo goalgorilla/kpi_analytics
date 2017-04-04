@@ -10,14 +10,14 @@ namespace Drupal\kpi_analytics\Plugin\KPIVisualization;
 use Drupal\kpi_analytics\Plugin\KPIVisualizationBase;
 
 /**
- * Provides a 'MorrisLineGraphKPIVisualization' KPI Visualization.
+ * Provides a 'MorrisBarGraphKPIVisualization' KPI Visualization.
  *
  * @KPIVisualization(
- *  id = "morris_line_graph_kpi_visualization",
- *  label = @Translation("Morris line graph KPI visualization"),
+ *  id = "morris_bar_graph_kpi_visualization",
+ *  label = @Translation("Morris bar graph KPI visualization"),
  * )
  */
-class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
+class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
 
   /**
    * {@inheritdoc}
@@ -47,12 +47,12 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
       'ykeys' => $ykeys,
       'parseTime' => FALSE,
       'labels' => $this->labels,
-      'plugin' => 'Line',
+      'plugin' => 'Bar',
     ];
 
     return [
       '#theme' => 'kpi_analytics_morris_chart',
-      '#type' => 'line',
+      '#type' => 'bar',
       '#uuid' => $uuid,
       '#attached' => [
         'library' => [

@@ -10,8 +10,9 @@ use Drupal\Component\Plugin\PluginBase;
 abstract class KPIDataFormatterBase extends PluginBase implements KPIDataFormatterInterface {
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function format(array $data) {
+    return $data;
   }
 }

@@ -9,7 +9,25 @@ use Drupal\Component\Plugin\PluginBase;
  */
 abstract class KPIVisualizationBase extends PluginBase implements KPIVisualizationInterface {
 
-  function render(array $data) {
-    return 'Hello world';
+  /**
+   * Contains a list with labels for chart.
+   *
+   * @var array
+   */
+  protected $labels = [];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function render(array $data) {
+    return '';
   }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setLabels(array $labels) {
+    $this->labels = $labels;
+  }
+
 }
