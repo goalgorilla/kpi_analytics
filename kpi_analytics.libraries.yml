@@ -1,12 +1,7 @@
 morris:
-  version: v0.5.1
   js:
-    assets/js/morris.min.js: {}
     assets/js/morris-chart.js: {}
-    assets/js/raphael.min.js: {}
-  css:
-    theme:
-      assets/css/morrisjs.css: {}
   dependencies:
       - core/jquery
       - core/drupalSettings
+      - socialbase/charts
