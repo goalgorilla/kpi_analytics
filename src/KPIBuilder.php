@@ -49,11 +49,19 @@ class KPIBuilder implements KPIBuilderInterface {
     // Retrieve the plugins.
     $visualization_plugin = \Drupal::service('plugin.manager.kpi_visualization.processor')
       ->createInstance($visualization);
+
     $labels = array_map(function ($item) {
       return $item['value'];
     }, $entity->get('field_kpi_chart_labels')->getValue());
-    $visualization_plugin->setLabels($labels);
-    $render_array = $visualization_plugin->render($data);
+
+    $colors = array_map(function ($item) {
+      return $item['value'];
+    }, $entity->get('field_kpi_chart_colors')->getValue());
+
+    $render_array = $visualization_plugin
+      ->setLabels($labels)
+      ->setColors($colors)
+      ->render($data);
 
     return $render_array;
   }

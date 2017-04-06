@@ -11,4 +11,9 @@ services:
   kpi_analytics.kpi_builder:
     class: Drupal\kpi_analytics\KPIBuilder
     arguments: ["@entity_type.manager"]
-
+  kpi_analytics.block_creator:
+    class: \Drupal\kpi_analytics\BlockCreator
+    arguments: ['@entity_type.manager', '@config.factory']
+  kpi_analytics.block_content_creator:
+    class: \Drupal\kpi_analytics\BlockContentCreator
+    arguments: ['@entity_type.manager', '@kpi_analytics.block_creator']

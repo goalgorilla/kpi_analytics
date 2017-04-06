@@ -17,6 +17,13 @@ abstract class KPIVisualizationBase extends PluginBase implements KPIVisualizati
   protected $labels = [];
 
   /**
+   * Contains a list with colors for chart.
+   *
+   * @var array
+   */
+  protected $colors = [];
+
+  /**
    * {@inheritdoc}
    */
   public function render(array $data) {
@@ -28,6 +35,17 @@ abstract class KPIVisualizationBase extends PluginBase implements KPIVisualizati
    */
   public function setLabels(array $labels) {
     $this->labels = $labels;
+
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setColors(array $colors) {
+    $this->colors = $colors;
+
+    return $this;
   }
 
 }
