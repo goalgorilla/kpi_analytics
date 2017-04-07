@@ -10,6 +10,7 @@ dependencies:
     - field.field.block_content.kpi_analytics.field_kpi_query
     - field.field.block_content.kpi_analytics.field_kpi_visualization
     - field.field.block_content.kpi_analytics.field_kpi_chart_labels
+    - field.field.block_content.kpi_analytics.field_kpi_chart_colors
   module:
     - text
 id: block_content.kpi_analytics.default
@@ -30,3 +31,4 @@ hidden:
   field_kpi_query: true
   field_kpi_visualization: true
   field_kpi_chart_labels: true
+  field_kpi_chart_colors: true

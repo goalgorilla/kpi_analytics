@@ -48,6 +48,7 @@ class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
       'parseTime' => FALSE,
       'labels' => $this->labels,
       'plugin' => 'Bar',
+      'barColors' => $this->colors,
     ];
 
     return [

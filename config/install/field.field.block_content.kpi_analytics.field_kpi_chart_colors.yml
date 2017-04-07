@@ -3,12 +3,12 @@ status: true
 dependencies:
   config:
     - block_content.type.kpi_analytics
-    - field.storage.block_content.field_kpi_chart_labels
-id: block_content.kpi_analytics.field_kpi_chart_labels
-field_name: field_kpi_chart_labels
+    - field.storage.block_content.field_kpi_chart_colors
+id: block_content.kpi_analytics.field_kpi_chart_colors
+field_name: field_kpi_chart_colors
 entity_type: block_content
 bundle: kpi_analytics
-label: 'KPI Chart labels'
+label: 'KPI Chart colors'
 description: ''
 required: true
 translatable: false
