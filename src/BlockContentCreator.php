@@ -115,6 +115,18 @@ class BlockContentCreator {
   }
 
   /**
+   * Delete block content.
+   */
+  public function delete() {
+    $data = $this->getData();
+    $values = $data['values'];
+
+    if ($block_content = $this->entityTypeManager->getStorage('block_content')->loadByProperties(['uuid' => $values['uuid']])) {
+      current($block_content)->delete();
+    }
+  }
+
+  /**
    * Create instance of created block content.
    *
    * @param $path
