@@ -133,4 +133,15 @@ class BlockCreator {
     return $this->entity;
   }
 
+  /**
+   * Delete block.
+   */
+  public function delete() {
+    $values = $this->getData();
+
+    if ($block = $this->entityTypeManager->getStorage('block')->load($values['id'])) {
+      $block->delete();
+    }
+  }
+
 }
