@@ -9,5 +9,5 @@
   ],
   "license": "GPL-2.0+",
   "homepage": "https://github.com/goalgorilla/kpi_analytics",
-  "minimum-stability": "dev",
+  "minimum-stability": "dev"
 }
