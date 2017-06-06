@@ -38,10 +38,15 @@ class YearTimelineKPIDataFormatter extends KPIDataFormatterBase {
       }
     }
 
+    $last_item = current($data);
+
     foreach ($months as $month) {
       if (!isset($formatted_data[ $month ])) {
-        $formatted_data[ $month ] = end($data);
+        $formatted_data[ $month ] = $last_item;
         $formatted_data[ $month ]['created'] = $month;
+      }
+      else {
+        $last_item = $formatted_data[ $month ];
       }
     }
 
