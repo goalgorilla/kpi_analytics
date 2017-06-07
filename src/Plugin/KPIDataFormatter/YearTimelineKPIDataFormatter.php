@@ -25,6 +25,7 @@ class YearTimelineKPIDataFormatter extends KPIDataFormatterBase {
   public function format(array $data) {
     $months = [];
     $current_month = $data ? date('n') : 12;
+    $date_formatter = \Drupal::service('date.formatter');
 
     for ($i = 1; $i <= $current_month; $i++) {
       $months[] = date('Y-m', mktime(0, 0, 0, $i, 1));
@@ -34,19 +35,28 @@ class YearTimelineKPIDataFormatter extends KPIDataFormatterBase {
 
     if ($data) {
       foreach ($data as $value) {
-        $formatted_data[$value['created']] = $value;
+        $date = $value['created'];
+        $time = strtotime($value['created']);
+        $value['created'] = $date_formatter->format($time, '', 'F');
+        $formatted_data[ $date ] = $value;
       }
     }
 
     $last_item = current($data);
+    $current_date = date('Y-m');
 
     foreach ($months as $month) {
       if (!isset($formatted_data[ $month ])) {
+        $time = strtotime($month);
         $formatted_data[ $month ] = $last_item;
-        $formatted_data[ $month ]['created'] = $month;
+        $formatted_data[ $month ]['created'] = $date_formatter->format($time, '', 'F');
       }
       else {
-        $last_item = $formatted_data[ $month ];
+        $last_item = $formatted_data[$month];
+      }
+
+      if ($current_date == $month) {
+        $formatted_data[ $month ]['highlight'] = TRUE;
       }
     }
 

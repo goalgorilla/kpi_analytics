@@ -55,6 +55,8 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
       '#theme' => 'kpi_analytics_morris_chart',
       '#type' => 'line',
       '#uuid' => $uuid,
+      '#labels' => $this->labels,
+      '#colors' => $this->colors,
       '#attached' => [
         'library' => [
           'kpi_analytics/morris',
