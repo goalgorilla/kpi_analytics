@@ -119,6 +119,8 @@ function kpi_analytics_theme($existing, $type, $theme, $path) {
       'variables' => [
         'type' => NULL,
         'uuid' => NULL,
+        'labels' => [],
+        'colors' => [],
       ],
     ],
   ];
