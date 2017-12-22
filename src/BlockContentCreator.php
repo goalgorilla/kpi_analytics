@@ -66,7 +66,8 @@ class BlockContentCreator {
    */
   protected function getData() {
     $source = "{$this->path}/{$this->id}.yml";
-    $data = Yaml::parse($source);
+    $content = file_get_contents($source);
+    $data = Yaml::parse($content);
 
     return $data;
   }

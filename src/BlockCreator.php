@@ -78,7 +78,8 @@ class BlockCreator {
   protected function getData($reset = FALSE) {
     if (!$this->data || $reset) {
       $source = "{$this->path}/{$this->id}.yml";
-      $this->data = Yaml::parse($source);
+      $content = file_get_contents($source);
+      $this->data = Yaml::parse($content);
     }
 
     return $this->data;
