@@ -24,11 +24,11 @@
       width: 9px; }
 
 text.morris-label-highlight {
-  fill: #8b0000;
+  fill: #000;
   font-weight: 700 !important; }
 
 div.morris-label-highlight {
-  color: #8b0000;
+  color: #000;
   font-weight: 700 !important; }
 
 /*# sourceMappingURL=morris-chart.css.map */

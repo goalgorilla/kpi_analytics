@@ -98,13 +98,12 @@ class BlockContentCreator {
       return $this->entity;
     }
 
-    $fields = isset($data['fields']) ? $data['fields'] : [];
-
-    // Create base instance of the entity beign created.
+    // Create base instance of the entity being created.
     $this->entity = $this->entityTypeManager
       ->getStorage('block_content')
       ->create($values);
 
+    $fields = isset($data['fields']) ? $data['fields'] : [];
     // Fill fields.
     foreach ($fields as $field_name => $value) {
       $this->entity->get($field_name)->setValue($value);
@@ -113,6 +112,30 @@ class BlockContentCreator {
     $this->entity->save();
 
     return $this->entity;
+  }
+
+  /**
+   * Update entity with values defined in a yaml file.
+   *
+   * @return \Drupal\block_content\Entity\BlockContent
+   */
+  public function update() {
+    $data = $this->getData();
+    $values = $data['values'];
+
+    if ($block_content = $this->entityTypeManager->getStorage('block_content')->loadByProperties(['uuid' => $values['uuid']])) {
+      $this->entity = current($block_content);
+
+      $fields = isset($data['fields']) ? $data['fields'] : [];
+      // Fill fields.
+      foreach ($fields as $field_name => $value) {
+        $this->entity->get($field_name)->setValue($value);
+      }
+
+      $this->entity->save();
+
+      return $this->entity;
+    }
   }
 
   /**

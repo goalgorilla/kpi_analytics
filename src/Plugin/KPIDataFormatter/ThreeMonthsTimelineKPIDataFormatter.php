@@ -14,7 +14,7 @@ use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
  *
  * @KPIDataFormatter(
  *  id = "three_months_timeline_kpi_data_formatter",
- *  label = @Translation("3 Months Timeline KPI data formatter"),
+ *  label = @Translation("3 Months (+ current) Timeline KPI data formatter"),
  * )
  */
 class ThreeMonthsTimelineKPIDataFormatter extends KPIDataFormatterBase {
@@ -26,7 +26,7 @@ class ThreeMonthsTimelineKPIDataFormatter extends KPIDataFormatterBase {
     $months = [];
     $date_formatter = \Drupal::service('date.formatter');
 
-    for ($i = 0; $i < 3; $i++) {
+    for ($i = 0; $i < 4; $i++) {
       $months[] = date('Y-m', strtotime('this month - ' . $i . ' month'));
     }
 

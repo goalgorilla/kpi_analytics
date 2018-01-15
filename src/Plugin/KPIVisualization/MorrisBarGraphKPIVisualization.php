@@ -49,6 +49,7 @@ class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
       'labels' => $this->labels,
       'plugin' => 'Bar',
       'barColors' => $this->colors,
+      'stacked' => TRUE
     ];
 
     return [
