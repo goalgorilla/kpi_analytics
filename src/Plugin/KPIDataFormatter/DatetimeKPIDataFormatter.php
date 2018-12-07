@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIVisualization\DateTimeKPIDataFormatter.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIDataFormatter;
 
-use Drupal\Component\Utility\SortArray;
 use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
 
 /**
@@ -21,7 +15,7 @@ use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
 class DateTimeKPIDataFormatter extends KPIDataFormatterBase {
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function format(array $data) {
     $formatted_data = [];
@@ -39,7 +33,10 @@ class DateTimeKPIDataFormatter extends KPIDataFormatterBase {
     return $formatted_data;
   }
 
-  function sortByField($field) {
+  /**
+   * Simple sort callback.
+   */
+  public function sortByField($field) {
     return function ($a, $b) use ($field) {
       if ($a[$field] == $b[$field]) {
         return 0;
@@ -49,4 +46,5 @@ class DateTimeKPIDataFormatter extends KPIDataFormatterBase {
       }
     };
   }
+
 }

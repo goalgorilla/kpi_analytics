@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains kpi_analytics.module..
+ * The KPI Analytics module.
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -63,7 +63,7 @@ function kpi_analytics_preprocess_block(&$variables) {
     $variables['content']['#block_content']->bundle() === 'kpi_analytics'
   ) {
 
-    // TODO: work on caching and preferable use the hook below to render the output.
+    // TODO: Work on caching and preferable use the hook below for render.
     // TODO: See how we can render this in the template without moving this.
     $variables['content']['kpi_analytics'] = $variables['elements']['kpi_analytics'];
   }
@@ -74,15 +74,13 @@ function kpi_analytics_preprocess_block(&$variables) {
  */
 function kpi_analytics_block_view_block_content_alter(&$build, BlockPluginInterface $block) {
   if ($block_entity = _kpi_analytics_is_kpi_block($block)) {
-    //$build['test']['#markup'] = 'Hello world';
-
     $build['kpi_analytics'] = [
       '#lazy_builder' => [
         'kpi_analytics.kpi_builder:build',
         [
           $block_entity->getEntityTypeId(),
           $block_entity->id(),
-        ]
+        ],
       ],
       '#create_placeholder' => TRUE,
     ];
@@ -98,7 +96,7 @@ function _kpi_analytics_is_kpi_block(BlockPluginInterface $block) {
     // Load the block entity.
     $block_entities = \Drupal::entityTypeManager()
       ->getStorage('block_content')
-      ->loadByProperties(array('uuid' => $uuid));
+      ->loadByProperties(['uuid' => $uuid]);
     if ($block_entity = array_pop($block_entities)) {
       if ($block_entity->bundle() === 'kpi_analytics') {
         return $block_entity;

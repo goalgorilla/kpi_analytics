@@ -10,7 +10,7 @@ services:
     parent: default_plugin_manager
   kpi_analytics.kpi_builder:
     class: Drupal\kpi_analytics\KPIBuilder
-    arguments: ["@entity_type.manager"]
+    arguments: ['@entity_type.manager', '@plugin.manager.kpi_datasource.processor', '@plugin.manager.kpi_data_formatter.processor', '@plugin.manager.kpi_visualization.processor']
   kpi_analytics.block_creator:
     class: \Drupal\kpi_analytics\BlockCreator
     arguments: ['@entity_type.manager', '@config.factory']

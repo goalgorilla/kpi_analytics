@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIVisualization\MorrisLineGraphKPIVisualization.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIVisualization;
 
 use Drupal\kpi_analytics\Plugin\KPIVisualizationBase;
@@ -49,7 +44,7 @@ class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
       'labels' => $this->labels,
       'plugin' => 'Bar',
       'barColors' => $this->colors,
-      'stacked' => TRUE
+      'stacked' => TRUE,
     ];
 
     return [
@@ -76,4 +71,5 @@ class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
       ],
     ];
   }
+
 }

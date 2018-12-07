@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIVisualization\MorrisLineGraphKPIVisualization.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIVisualization;
 
 use Drupal\kpi_analytics\Plugin\KPIVisualizationBase;
@@ -75,4 +70,5 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
       ],
     ];
   }
+
 }

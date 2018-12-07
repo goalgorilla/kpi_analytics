@@ -10,7 +10,8 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 interface KPIDatasourceInterface extends PluginInspectionInterface {
 
   /**
-   * Query the datasource
+   * Query the data source.
    */
   public function query($query);
+
 }

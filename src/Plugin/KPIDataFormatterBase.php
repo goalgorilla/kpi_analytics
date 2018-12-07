@@ -15,4 +15,5 @@ abstract class KPIDataFormatterBase extends PluginBase implements KPIDataFormatt
   public function format(array $data) {
     return $data;
   }
+
 }

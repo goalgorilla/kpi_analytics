@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIVisualization\AggregateKPIDataFormatter.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIDataFormatter;
 
 use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
@@ -20,12 +15,11 @@ use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
 class AggregateKPIDataFormatter extends KPIDataFormatterBase {
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function format(array $data) {
     $formatted_data = [];
     $date_formatter = \Drupal::service('date.formatter');
-
 
     // Combine multiple values in one value.
     foreach ($data as $value) {
@@ -36,4 +30,5 @@ class AggregateKPIDataFormatter extends KPIDataFormatterBase {
     }
     return $formatted_data;
   }
+
 }

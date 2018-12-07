@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIVisualization\RawKPIDataFormatter.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIDataFormatter;
 
 use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
@@ -41,23 +36,23 @@ class ThreeMonthsTimelineKPIDataFormatter extends KPIDataFormatterBase {
         $date = $value['created'];
         $time = strtotime($value['created']);
         $value['created'] = $date_formatter->format($time, '', 'F');
-        $formatted_data[ $date ] = $value;
+        $formatted_data[$date] = $value;
       }
     }
 
     $current_date = date('Y-m');
 
     foreach ($months as $month) {
-      if (!isset($formatted_data[ $month ])) {
+      if (!isset($formatted_data[$month])) {
         $time = strtotime($month);
         $value = reset($data);
         $keys = array_keys($value ?: []);
-        $formatted_data[ $month ] = array_fill_keys($keys, 0);
-        $formatted_data[ $month ]['created'] = $date_formatter->format($time, '', 'F');
+        $formatted_data[$month] = array_fill_keys($keys, 0);
+        $formatted_data[$month]['created'] = $date_formatter->format($time, '', 'F');
       }
 
       if ($current_date == $month) {
-        $formatted_data[ $month ]['highlight'] = TRUE;
+        $formatted_data[$month]['highlight'] = TRUE;
       }
     }
 

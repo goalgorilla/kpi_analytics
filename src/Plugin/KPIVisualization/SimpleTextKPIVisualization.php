@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIVisualization\SimpleTextKPIVisualization.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIVisualization;
 
 use Drupal\kpi_analytics\Plugin\KPIVisualizationBase;
@@ -20,7 +15,7 @@ use Drupal\kpi_analytics\Plugin\KPIVisualizationBase;
 class SimpleTextKPIVisualization extends KPIVisualizationBase {
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function render(array $data) {
     $render_array = [];
@@ -28,4 +23,5 @@ class SimpleTextKPIVisualization extends KPIVisualizationBase {
     $render_array['kpi_analytics']['#markup'] = array_shift($value) . ' registered users on the platform';
     return $render_array;
   }
+
 }

@@ -5,19 +5,30 @@ namespace Drupal\kpi_analytics;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class BlockContentCreator.
+ *
+ * @package Drupal\kpi_analytics
+ */
 class BlockContentCreator {
 
   /**
+   * Entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * Block creator.
+   *
    * @var \Drupal\kpi_analytics\BlockCreator
    */
   protected $blockCreator;
 
   /**
+   * Block content entity.
+   *
    * @var \Drupal\block_content\Entity\BlockContent
    */
   protected $entity;
@@ -30,8 +41,7 @@ class BlockContentCreator {
   protected $path;
 
   /**
-   * Identifier of a block.
-   * Should be equal to filename.
+   * Identifier of a block. Should be equal to filename.
    *
    * @var string
    */
@@ -39,8 +49,11 @@ class BlockContentCreator {
 
   /**
    * BlockContentCreator constructor.
+   *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   Entity type manager.
    * @param \Drupal\kpi_analytics\BlockCreator $block_creator
+   *   Block creator.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, BlockCreator $block_creator) {
     $this->entityTypeManager = $entity_type_manager;
@@ -48,11 +61,12 @@ class BlockContentCreator {
   }
 
   /**
-   * Set path to directory with the file source and
-   * identifier of the block being created.
+   * Set path to directory with the file source and block ID being created.
    *
    * @param string $path
+   *   Path to directory with the file source.
    * @param string $id
+   *   Identifier of a block.
    */
   public function setSource($path, $id) {
     $this->path = $path;
@@ -60,24 +74,26 @@ class BlockContentCreator {
   }
 
   /**
-   * Parse data from a yaml file.
+   * Parse data from a YAML file.
+   *
+   * @param bool $reset
+   *   If TRUE, file will be parsed again.
    *
    * @return array
+   *   Data
    */
-  protected function getData() {
-    $source = "{$this->path}/{$this->id}.yml";
-    $content = file_get_contents($source);
-    $data = Yaml::parse($content);
+  protected function getData($reset = FALSE) {
+    if (!$this->data || $reset) {
+      $source = "{$this->path}/{$this->id}.yml";
+      $content = file_get_contents($source);
+      $this->data = Yaml::parse($content);
+    }
 
-    return $data;
+    return $this->data;
   }
 
   /**
    * Get created entity.
-   * In case when entity with provided identifier already
-   * exists, this method will return existing entity.
-   *
-   * @return \Drupal\block_content\Entity\BlockContent|null
    */
   public function getEntity() {
     return $this->entity;
@@ -85,8 +101,6 @@ class BlockContentCreator {
 
   /**
    * Create entity with values defined in a yaml file.
-   *
-   * @return \Drupal\block_content\Entity\BlockContent
    */
   public function create() {
     $data = $this->getData();
@@ -116,8 +130,6 @@ class BlockContentCreator {
 
   /**
    * Update entity with values defined in a yaml file.
-   *
-   * @return \Drupal\block_content\Entity\BlockContent
    */
   public function update() {
     $data = $this->getData();
@@ -153,12 +165,13 @@ class BlockContentCreator {
   /**
    * Create instance of created block content.
    *
-   * @param $path
+   * @param string $path
    *   Path to directory with the source file.
-   * @param $id
+   * @param string $id
    *   Identifier of block and filename without extension.
    *
    * @return \Drupal\block\Entity\Block
+   *   Block entity.
    */
   public function createBlockInstance($path, $id) {
     $block_creator = clone $this->blockCreator;
