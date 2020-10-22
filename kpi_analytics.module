@@ -5,10 +5,10 @@
  * Contains kpi_analytics.module..
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Block\BlockPluginInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
  * Implements hook_help().
@@ -74,15 +74,13 @@ function kpi_analytics_preprocess_block(&$variables) {
  */
 function kpi_analytics_block_view_block_content_alter(&$build, BlockPluginInterface $block) {
   if ($block_entity = _kpi_analytics_is_kpi_block($block)) {
-    //$build['test']['#markup'] = 'Hello world';
-
     $build['kpi_analytics'] = [
       '#lazy_builder' => [
         'kpi_analytics.kpi_builder:build',
         [
           $block_entity->getEntityTypeId(),
           $block_entity->id(),
-        ]
+        ],
       ],
       '#create_placeholder' => TRUE,
     ];
@@ -98,7 +96,7 @@ function _kpi_analytics_is_kpi_block(BlockPluginInterface $block) {
     // Load the block entity.
     $block_entities = \Drupal::entityTypeManager()
       ->getStorage('block_content')
-      ->loadByProperties(array('uuid' => $uuid));
+      ->loadByProperties(['uuid' => $uuid]);
     if ($block_entity = array_pop($block_entities)) {
       if ($block_entity->bundle() === 'kpi_analytics') {
         return $block_entity;
@@ -124,4 +122,36 @@ function kpi_analytics_theme($existing, $type, $theme, $path) {
       ],
     ],
   ];
+}
+
+/**
+ * Update list on taxonomy vocabularies in the 'field_kpi_term' field.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+ * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function _kpi_analytics_update_allowed_vocabularies() {
+  /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
+  $entity_field_manager = Drupal::service('entity_field.manager');
+
+  // Get all fields in 'kpi_analytics' bundle of 'block_content' entity type.
+  $kpi_analytics_field_definitions = $entity_field_manager
+    ->getFieldDefinitions('block_content', 'kpi_analytics');
+
+  // Get 'field_kpi_term' definition and his handler settings.
+  /** @var \Drupal\field\Entity\FieldConfig $kpi_term_definition */
+  $kpi_term_definition = $kpi_analytics_field_definitions['field_kpi_term'];
+  $kpi_term_handler_settings = $kpi_term_definition->getSetting('handler_settings');
+
+  // Get all available vocabularies.
+  $vocabularies = Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')
+    ->loadMultiple();
+
+  // Set to the 'field_kpi_term' list of available vocabularies.
+  $kpi_term_handler_settings['target_bundles'] = array_map(static function ($value) {
+    return $value->id();
+  }, $vocabularies);
+  $kpi_term_definition->setSetting('handler_settings', $kpi_term_handler_settings);
+  $kpi_term_definition->save();
 }

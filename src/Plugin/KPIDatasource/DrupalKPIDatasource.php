@@ -1,12 +1,8 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIDatasource\DrupalKPIDatasource.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIDatasource;
 
+use Drupal\block_content\BlockContentInterface;
 use Drupal\kpi_analytics\Plugin\KPIDatasourceBase;
 
 /**
@@ -20,16 +16,21 @@ use Drupal\kpi_analytics\Plugin\KPIDatasourceBase;
 class DrupalKPIDatasource extends KPIDatasourceBase {
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
-  public function query($query) {
+  public function query(BlockContentInterface $entity) {
     $data = [];
     // TODO: deprecated use dependency injection.
     // TODO: check if we can use Views module.
-    $results = db_query($query)->fetchAll();
-    foreach ($results as $result) {
-      $data[] = (array) $result;
+    if (!$entity->get('field_kpi_query')->isEmpty()) {
+      $query = $entity->field_kpi_query->value;
+      $results = $this->database->query($query)->fetchAll();
+      foreach ($results as $result) {
+        $data[] = (array) $result;
+      }
     }
+
     return $data;
   }
+
 }

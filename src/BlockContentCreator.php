@@ -5,19 +5,30 @@ namespace Drupal\kpi_analytics;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class BlockContentCreator.
+ *
+ * @package Drupal\kpi_analytics
+ */
 class BlockContentCreator {
 
   /**
+   * The entity type manager.
+   *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
+   * The block creator service.
+   *
    * @var \Drupal\kpi_analytics\BlockCreator
    */
   protected $blockCreator;
 
   /**
+   * The 'block_content' entity.
+   *
    * @var \Drupal\block_content\Entity\BlockContent
    */
   protected $entity;
@@ -30,29 +41,40 @@ class BlockContentCreator {
   protected $path;
 
   /**
-   * Identifier of a block.
-   * Should be equal to filename.
+   * Identifier of a block. Should be equal to filename.
    *
    * @var string
    */
   protected $id;
 
   /**
+   * The block content storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $blockContentStorage;
+
+  /**
    * BlockContentCreator constructor.
+   *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\kpi_analytics\BlockCreator $block_creator
+   *   The block creator service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, BlockCreator $block_creator) {
     $this->entityTypeManager = $entity_type_manager;
     $this->blockCreator = $block_creator;
+    $this->blockContentStorage = $entity_type_manager->getStorage('block_content');
   }
 
   /**
-   * Set path to directory with the file source and
-   * identifier of the block being created.
+   * Set path to directory with the file source and block ID being created.
    *
    * @param string $path
+   *   Path to directory with the file source.
    * @param string $id
+   *   Identifier of a block.
    */
   public function setSource($path, $id) {
     $this->path = $path;
@@ -60,9 +82,10 @@ class BlockContentCreator {
   }
 
   /**
-   * Parse data from a yaml file.
+   * Parse data from a YAML file.
    *
    * @return array
+   *   Data.
    */
   protected function getData() {
     $source = "{$this->path}/{$this->id}.yml";
@@ -74,10 +97,6 @@ class BlockContentCreator {
 
   /**
    * Get created entity.
-   * In case when entity with provided identifier already
-   * exists, this method will return existing entity.
-   *
-   * @return \Drupal\block_content\Entity\BlockContent|null
    */
   public function getEntity() {
     return $this->entity;
@@ -85,23 +104,19 @@ class BlockContentCreator {
 
   /**
    * Create entity with values defined in a yaml file.
-   *
-   * @return \Drupal\block_content\Entity\BlockContent
    */
   public function create() {
     $data = $this->getData();
     $values = $data['values'];
 
-    if ($block_content = $this->entityTypeManager->getStorage('block_content')->loadByProperties(['uuid' => $values['uuid']])) {
+    if ($block_content = $this->blockContentStorage->loadByProperties(['uuid' => $values['uuid']])) {
       $this->entity = current($block_content);
 
       return $this->entity;
     }
 
     // Create base instance of the entity being created.
-    $this->entity = $this->entityTypeManager
-      ->getStorage('block_content')
-      ->create($values);
+    $this->entity = $this->blockContentStorage->create($values);
 
     $fields = isset($data['fields']) ? $data['fields'] : [];
     // Fill fields.
@@ -116,14 +131,12 @@ class BlockContentCreator {
 
   /**
    * Update entity with values defined in a yaml file.
-   *
-   * @return \Drupal\block_content\Entity\BlockContent
    */
   public function update() {
     $data = $this->getData();
     $values = $data['values'];
 
-    if ($block_content = $this->entityTypeManager->getStorage('block_content')->loadByProperties(['uuid' => $values['uuid']])) {
+    if ($block_content = $this->blockContentStorage->loadByProperties(['uuid' => $values['uuid']])) {
       $this->entity = current($block_content);
 
       $fields = isset($data['fields']) ? $data['fields'] : [];
@@ -145,7 +158,7 @@ class BlockContentCreator {
     $data = $this->getData();
     $values = $data['values'];
 
-    if ($block_content = $this->entityTypeManager->getStorage('block_content')->loadByProperties(['uuid' => $values['uuid']])) {
+    if ($block_content = $this->blockContentStorage->loadByProperties(['uuid' => $values['uuid']])) {
       current($block_content)->delete();
     }
   }
@@ -153,12 +166,13 @@ class BlockContentCreator {
   /**
    * Create instance of created block content.
    *
-   * @param $path
+   * @param string $path
    *   Path to directory with the source file.
-   * @param $id
+   * @param string $id
    *   Identifier of block and filename without extension.
    *
    * @return \Drupal\block\Entity\Block
+   *   The block entity.
    */
   public function createBlockInstance($path, $id) {
     $block_creator = clone $this->blockCreator;

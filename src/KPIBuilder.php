@@ -2,7 +2,10 @@
 
 namespace Drupal\kpi_analytics;
 
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\kpi_analytics\Plugin\KPIDataFormatterManager;
+use Drupal\kpi_analytics\Plugin\KPIDatasourceManager;
+use Drupal\kpi_analytics\Plugin\KPIVisualizationManager;
 
 /**
  * Class KPIBuilder.
@@ -12,17 +15,55 @@ use Drupal\Core\Entity\EntityTypeManager;
 class KPIBuilder implements KPIBuilderInterface {
 
   /**
-   * Drupal\Core\Entity\EntityTypeManager definition.
+   * The entity type manager.
    *
-   * @var Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entity_type_manager;
+  protected $entityTypeManager;
 
   /**
-   * Constructor.
+   * The kpi datasource manager.
+   *
+   * @var \Drupal\kpi_analytics\Plugin\KPIDatasourceManager
    */
-  public function __construct(EntityTypeManager $entity_type_manager) {
-    $this->entity_type_manager = $entity_type_manager;
+  protected $kpiDatasourceManager;
+
+  /**
+   * The kpi dataformatter manager.
+   *
+   * @var \Drupal\kpi_analytics\Plugin\KPIDataFormatterManager
+   */
+  protected $kpiDataFormatterManager;
+
+  /**
+   * The kpi visualization manager.
+   *
+   * @var \Drupal\kpi_analytics\Plugin\KPIVisualizationManager
+   */
+  protected $kpiVisualizationManager;
+
+  /**
+   * KPIBuilder constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   * @param \Drupal\kpi_analytics\Plugin\KPIDatasourceManager $kpi_datasource_manager
+   *   The kpi datasource manager.
+   * @param \Drupal\kpi_analytics\Plugin\KPIDataFormatterManager $kpi_data_formatter_manager
+   *   The kpi dataformatter manager.
+   * @param \Drupal\kpi_analytics\Plugin\KPIVisualizationManager $kpi_visualization_manager
+   *   The kpi visualization manager.
+   */
+  public function __construct(
+    EntityTypeManagerInterface $entity_type_manager,
+    KPIDatasourceManager $kpi_datasource_manager,
+    KPIDataFormatterManager $kpi_data_formatter_manager,
+    KPIVisualizationManager $kpi_visualization_manager
+  ) {
+    $this->entityTypeManager = $entity_type_manager;
+    $this->kpiDatasourceManager = $kpi_datasource_manager;
+    $this->kpiDataFormatterManager = $kpi_data_formatter_manager;
+    $this->kpiVisualizationManager = $kpi_visualization_manager;
   }
 
   /**
@@ -30,24 +71,23 @@ class KPIBuilder implements KPIBuilderInterface {
    */
   public function build($entity_type_id, $entity_id) {
     /** @var \Drupal\block_content\Entity\BlockContent $entity */
-    $entity = $this->entity_type_manager->getStorage($entity_type_id)
+    $entity = $this->entityTypeManager->getStorage($entity_type_id)
       ->load($entity_id);
-    $query = $entity->field_kpi_query->value;
     $datasource = $entity->field_kpi_datasource->value;
-    $datasource_plugin = \Drupal::service('plugin.manager.kpi_datasource.processor')
+    $datasource_plugin = $this->kpiDatasourceManager
       ->createInstance($datasource);
-    $data = $datasource_plugin->query($query);
+    $data = $datasource_plugin->query($entity);
 
     $data_formatters = $entity->field_kpi_data_formatter->getValue();
     foreach ($data_formatters as $data_formatter) {
-      $data_formatter_plugin = \Drupal::service('plugin.manager.kpi_data_formatter.processor')
+      $data_formatter_plugin = $this->kpiDataFormatterManager
         ->createInstance($data_formatter['value']);
       $data = $data_formatter_plugin->format($data);
     }
 
     $visualization = $entity->field_kpi_visualization->value;
     // Retrieve the plugins.
-    $visualization_plugin = \Drupal::service('plugin.manager.kpi_visualization.processor')
+    $visualization_plugin = $this->kpiVisualizationManager
       ->createInstance($visualization);
 
     $labels = array_map(function ($item) {
@@ -65,5 +105,5 @@ class KPIBuilder implements KPIBuilderInterface {
 
     return $render_array;
   }
-}
 
+}

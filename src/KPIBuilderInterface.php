@@ -17,4 +17,5 @@ interface KPIBuilderInterface {
    *   access.
    */
   public function build($entity_type_id, $entity_id);
+
 }
