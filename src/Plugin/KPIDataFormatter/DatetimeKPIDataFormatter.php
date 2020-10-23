@@ -5,14 +5,14 @@ namespace Drupal\kpi_analytics\Plugin\KPIDataFormatter;
 use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
 
 /**
- * Provides a 'DateTimeKPIDataFormatter' KPI data formatter.
+ * Provides a 'DatetimeKPIDataFormatter' KPI data formatter.
  *
  * @KPIDataFormatter(
  *  id = "datetime_kpi_data_formatter",
  *  label = @Translation("Datetime KPI data formatter"),
  * )
  */
-class DateTimeKPIDataFormatter extends KPIDataFormatterBase {
+class DatetimeKPIDataFormatter extends KPIDataFormatterBase {
 
   /**
    * {@inheritdoc}
