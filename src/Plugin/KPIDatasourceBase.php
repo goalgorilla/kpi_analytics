@@ -53,7 +53,7 @@ abstract class KPIDatasourceBase extends PluginBase implements KPIDatasourceInte
   /**
    * {@inheritdoc}
    */
-  public function query(BlockContentInterface $entity) {
+  public function query(BlockContentInterface $entity, $block) {
     return [];
   }
 

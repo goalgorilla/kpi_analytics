@@ -6,13 +6,6 @@
  */
 
 /**
- * Implements hook_install().
- */
-function kpi_analytics_install() {
-  _kpi_analytics_update_allowed_vocabularies();
-}
-
-/**
  * Implements hook_uninstall().
  *
  * Perform actions related to the de-installation of social_event_type.

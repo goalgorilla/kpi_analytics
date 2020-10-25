@@ -18,7 +18,7 @@ class DrupalKPIDatasource extends KPIDatasourceBase {
   /**
    * {@inheritdoc}
    */
-  public function query(BlockContentInterface $entity) {
+  public function query(BlockContentInterface $entity, $block) {
     $data = [];
     // TODO: deprecated use dependency injection.
     // TODO: check if we can use Views module.

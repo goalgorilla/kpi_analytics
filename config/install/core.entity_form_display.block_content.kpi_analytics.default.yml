@@ -10,7 +10,6 @@ dependencies:
     - field.field.block_content.kpi_analytics.field_kpi_data_formatter
     - field.field.block_content.kpi_analytics.field_kpi_datasource
     - field.field.block_content.kpi_analytics.field_kpi_query
-    - field.field.block_content.kpi_analytics.field_kpi_term
     - field.field.block_content.kpi_analytics.field_kpi_visualization
   module:
     - field_group
@@ -40,20 +39,6 @@ third_party_settings:
         description: ''
         required_fields: true
       label: General
-    group_taxonomy:
-      children:
-        - field_kpi_vocabulary
-        - field_kpi_term
-      parent_name: ''
-      weight: 1
-      format_type: fieldset
-      region: content
-      format_settings:
-        id: ''
-        classes: ''
-        description: ''
-        required_fields: true
-      label: Taxonomy
 id: block_content.kpi_analytics.default
 targetEntityType: block_content
 bundle: kpi_analytics
@@ -113,16 +98,6 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-  field_kpi_term:
-    weight: 29
-    settings:
-      match_limit: 10
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: kpi_term
-    region: content
   field_kpi_visualization:
     type: options_select
     weight: 4

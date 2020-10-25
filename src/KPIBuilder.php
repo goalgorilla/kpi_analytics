@@ -69,14 +69,22 @@ class KPIBuilder implements KPIBuilderInterface {
   /**
    * {@inheritdoc}
    */
-  public function build($entity_type_id, $entity_id) {
+  public function build($entity_type_id, $entity_id, $block_id = NULL) {
     /** @var \Drupal\block_content\Entity\BlockContent $entity */
     $entity = $this->entityTypeManager->getStorage($entity_type_id)
       ->load($entity_id);
+    /** @var \Drupal\block\BlockInterface $block */
+    if ($block_id) {
+      $block = $this->entityTypeManager->getStorage('block')
+        ->load($block_id);
+    }
+    else {
+      $block = NULL;
+    }
     $datasource = $entity->field_kpi_datasource->value;
     $datasource_plugin = $this->kpiDatasourceManager
       ->createInstance($datasource);
-    $data = $datasource_plugin->query($entity);
+    $data = $datasource_plugin->query($entity, $block);
 
     $data_formatters = $entity->field_kpi_data_formatter->getValue();
     foreach ($data_formatters as $data_formatter) {

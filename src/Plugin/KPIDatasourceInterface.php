@@ -15,7 +15,9 @@ interface KPIDatasourceInterface extends PluginInspectionInterface {
    *
    * @param \Drupal\block_content\BlockContentInterface $entity
    *   The 'block_content' entity.
+   * @param \Drupal\block\BlockInterface|null $block
+   *   The 'block' entity.
    */
-  public function query(BlockContentInterface $entity);
+  public function query(BlockContentInterface $entity, $block);
 
 }

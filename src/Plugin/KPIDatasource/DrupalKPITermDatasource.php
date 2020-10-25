@@ -18,19 +18,19 @@ class DrupalKPITermDatasource extends KPIDatasourceBase {
   /**
    * {@inheritdoc}
    */
-  public function query(BlockContentInterface $entity) {
+  public function query(BlockContentInterface $entity, $block) {
     $data = [];
     $args = [];
-    if (!$entity->get('field_kpi_term')->isEmpty()) {
-      $field_values = $entity->get('field_kpi_term')->getValue();
+    if (
+      $block !== NULL &&
+      $block->getThirdPartySetting('kpi_analytics', 'taxonomy_filter_terms')
+    ) {
       $query = $entity->field_kpi_query->value;
       preg_match_all('/:(\w+)/', $query, $placeholders);
       if (!empty($placeholders[1])) {
         foreach ($placeholders[1] as $placeholder) {
           if ($placeholder === 'ids') {
-            $args[':ids[]'] = array_map(function ($value) {
-              return $value['target_id'];
-            }, $field_values);
+            $args[':ids[]'] = $block->getThirdPartySetting('kpi_analytics', 'taxonomy_filter_terms');
           }
         }
       }
