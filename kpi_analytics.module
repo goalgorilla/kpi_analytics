@@ -5,12 +5,11 @@
  * Contains kpi_analytics.module..
  */
 
-use Drupal\block_content\BlockContentInterface;
 use Drupal\Core\Block\BlockPluginInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\kpi_analytics\Plugin\Block\KPIBlockContentBlock;
 
 /**
  * Implements hook_help().
@@ -60,14 +59,20 @@ function _kpi_visualization_allowed_values(FieldStorageDefinitionInterface $defi
  */
 function kpi_analytics_preprocess_block(&$variables) {
 
-  if ($variables['base_plugin_id'] === 'block_content' &&
+  if (
     isset($variables['content']['#block_content']) &&
+    $variables['base_plugin_id'] === 'block_content' &&
     $variables['content']['#block_content']->bundle() === 'kpi_analytics'
   ) {
 
     // TODO: work on caching and preferable use the hook below to render the output.
     // TODO: See how we can render this in the template without moving this.
-    $variables['content']['kpi_analytics'] = $variables['elements']['kpi_analytics'];
+    if (isset($variables['elements']['kpi_analytics']) && !isset($variables['content']['kpi_analytics'])) {
+      $variables['content']['kpi_analytics'] = $variables['elements']['kpi_analytics'];
+    }
+    elseif (isset($variables['content']['kpi_analytics']) && !isset($variables['elements']['kpi_analytics'])) {
+      $variables['elements']['kpi_analytics'] = $variables['content']['kpi_analytics'];
+    }
   }
 }
 
@@ -128,157 +133,41 @@ function kpi_analytics_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_block_alter().
  */
-function kpi_analytics_form_block_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  /** @var \Drupal\block\BlockInterface $block */
-  $block = $form_state->getFormObject()->getEntity();
-  $block_plugin = $block->getPlugin();
-  $bc_storage = Drupal::entityTypeManager()->getStorage('block_content');
-  $block_content = $bc_storage->loadByProperties([
-    'uuid' => $block_plugin->getDerivativeId(),
-  ]);
-  $block_content = reset($block_content);
-  if (
-    !$block_content instanceof BlockContentInterface ||
-    $block_content->bundle() !== 'kpi_analytics'
-  ) {
-    return;
-  }
+function kpi_analytics_block_alter(array &$definitions) {
+  $block_content_definitions = array_filter(
+    $definitions,
+    static function ($key) {
+      return strpos($key, 'block_content') === 0;
+    },
+    ARRAY_FILTER_USE_KEY
+  );
+  $block_content_ids = array_keys($block_content_definitions);
 
   // KPIDatasource plugins for which need add taxonomy filtering.
   $datasource_with_terms = [
     'drupal_kpi_term_datasource',
   ];
 
-  if (in_array($block_content->field_kpi_datasource->value, $datasource_with_terms)) {
-    // Get saved terms.
-    $default_terms = $block->getThirdPartySetting('kpi_analytics', 'taxonomy_filter_terms');
-
-    // Get all available vocabularies.
-    $vocabularies = Drupal::entityTypeManager()
-      ->getStorage('taxonomy_vocabulary')
-      ->loadMultiple();
-
-    // Generate vocabulary options.
-    $vocabulary_options = array_map(static function ($value) {
-      return $value->label();
-    }, $vocabularies);
-
-    // Get default vocabulary.
-    $default_vocabulary = array_keys($vocabulary_options)[0];
-    if ($block->getThirdPartySetting('kpi_analytics', 'taxonomy_filter_vocabulary')) {
-      $default_vocabulary = $block->getThirdPartySetting('kpi_analytics', 'taxonomy_filter_vocabulary');
-    }
-    $user_input = $form_state->getUserInput();
-    if (isset($user_input['taxonomy_filter']['vocabulary'])) {
-      $default_vocabulary = $user_input['taxonomy_filter']['vocabulary'];
-      $default_terms = NULL;
+  $bc_storage = Drupal::entityTypeManager()->getStorage('block_content');
+  foreach ($block_content_ids as $block_content_id) {
+    if (empty($definitions[$block_content_id])) {
+      continue;
     }
 
-    // Get terms options.
-    $term_options = _kpi_analytics_get_terms_by_vocabulary($default_vocabulary);
-
-    // Generate field for terms filtering.
-    $form['taxonomy_filter'] = [
-      '#type' => 'container',
-      '#weight' => 0,
-      'vocabulary' => [
-        '#type' => 'select',
-        '#title' => t('Vocabulary'),
-        '#options' => $vocabulary_options,
-        '#default_value' => $default_vocabulary,
-        '#value' => $default_vocabulary,
-        '#ajax' => [
-          'event' => 'change',
-          'callback' => '_kpi_analytics_update_term_list',
-          'wrapper' => 'kpi-term-wrapper',
-        ],
-        '#required' => TRUE,
-      ],
-      'terms' => [
-        '#type' => 'select2',
-        '#title' => t('Terms'),
-        '#options' => $term_options,
-        '#default_value' => $default_terms,
-        '#value' => $default_terms,
-        '#multiple' => TRUE,
-        '#required' => TRUE,
-        '#prefix' => '<div id="kpi-term-wrapper">',
-        '#suffix' => '</div>',
-      ],
-    ];
-
-    $form['actions']['submit']['#submit'][] = '_kpi_analytics_block_config_submit';
-  }
-}
-
-/**
- * Set custom configuration for KPI Blocks.
- *
- * @param array $form
- *   The execution form.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The current state of the form.
- *
- * @throws \Drupal\Core\Entity\EntityStorageException
- */
-function _kpi_analytics_block_config_submit(array &$form, FormStateInterface $form_state) {
-  /** @var \Drupal\block\BlockInterface $block */
-  $block = $form_state->getFormObject()->getEntity();
-  $user_inputs = $form_state->getUserInput();
-  $block->setThirdPartySetting(
-    'kpi_analytics',
-    'taxonomy_filter_vocabulary',
-    $user_inputs['taxonomy_filter']['vocabulary']
-  );
-  $block->setThirdPartySetting(
-    'kpi_analytics',
-    'taxonomy_filter_terms',
-    $user_inputs['taxonomy_filter']['terms']
-  );
-  $block->save();
-}
-
-/**
- * Gets list ot taxonomy terms by vocabulary.
- *
- * @param string $vid
- *   Taxonomy vocabulary ID.
- *
- * @return array|null[]|string[]
- *   List of terms.
- *
- * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
- * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
- */
-function _kpi_analytics_get_terms_by_vocabulary($vid) {
-  $terms = Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadByProperties([
-      'vid' => $vid,
-      'status' => 1,
+    $uuid = explode(':', $block_content_id)[1];
+    $block_contents = $bc_storage->loadByProperties([
+      'uuid' => $uuid,
     ]);
-  if (!empty($terms)) {
-    return array_map(static function ($value) {
-      return $value->label();
-    }, $terms);
+
+    $block_content = reset($block_contents);
+    if ($block_content->bundle() !== 'kpi_analytics') {
+      continue;
+    }
+
+    if (in_array($block_content->field_kpi_datasource->value, $datasource_with_terms)) {
+      $definitions[$block_content_id]['class'] = KPIBlockContentBlock::class;
+    }
   }
-
-  return [];
-}
-
-/**
- * Updates list ot terms field.
- *
- * @param array $form
- *   The execution form.
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- *   The current state of the form.
- *
- * @return mixed
- *   Rendered array.
- */
-function _kpi_analytics_update_term_list(array &$form, FormStateInterface $form_state) {
-  return $form['taxonomy_filter']['terms'];
 }
