@@ -8,7 +8,6 @@ dependencies:
     - field.field.block_content.kpi_analytics.field_kpi_data_formatter
     - field.field.block_content.kpi_analytics.field_kpi_datasource
     - field.field.block_content.kpi_analytics.field_kpi_query
-    - field.field.block_content.kpi_analytics.field_kpi_term
     - field.field.block_content.kpi_analytics.field_kpi_visualization
     - field.field.block_content.kpi_analytics.field_kpi_chart_labels
     - field.field.block_content.kpi_analytics.field_kpi_chart_colors
@@ -34,4 +33,3 @@ hidden:
   field_kpi_visualization: true
   field_kpi_chart_labels: true
   field_kpi_chart_colors: true
-  field_kpi_term: true
