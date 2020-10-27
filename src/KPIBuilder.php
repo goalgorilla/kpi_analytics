@@ -121,9 +121,12 @@ class KPIBuilder implements KPIBuilderInterface {
         if ($section_storage instanceof SectionStorageInterface) {
           $sections = $section_storage->getSections();
           foreach ($sections as $section) {
-            if ($section->getComponent($block_id)) {
+            try {
               $block = $section->getComponent($block_id);
               break;
+            }
+            catch (\InvalidArgumentException $e) {
+              continue;
             }
           }
         }
