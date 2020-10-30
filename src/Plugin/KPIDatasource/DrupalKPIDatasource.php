@@ -20,7 +20,6 @@ class DrupalKPIDatasource extends KPIDatasourceBase {
    */
   public function query(BlockContentInterface $entity, $block) {
     $data = [];
-    // TODO: deprecated use dependency injection.
     // TODO: check if we can use Views module.
     if (!$entity->get('field_kpi_query')->isEmpty()) {
       $query = $entity->field_kpi_query->value;
