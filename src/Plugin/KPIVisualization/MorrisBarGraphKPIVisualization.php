@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIVisualization\MorrisLineGraphKPIVisualization.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIVisualization;
 
 use Drupal\kpi_analytics\Plugin\KPIVisualizationBase;
@@ -23,8 +18,7 @@ class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
    * {@inheritdoc}
    */
   public function render(array $data) {
-    $uuid_service = \Drupal::service('uuid');
-    $uuid = $uuid_service->generate();
+    $uuid = $this->uuid->generate();
 
     $xkey = 'x';
     $ykeys = ['y'];
@@ -49,7 +43,7 @@ class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
       'labels' => $this->labels,
       'plugin' => 'Bar',
       'barColors' => $this->colors,
-      'stacked' => TRUE
+      'stacked' => TRUE,
     ];
 
     return [
@@ -76,4 +70,5 @@ class MorrisBarGraphKPIVisualization extends KPIVisualizationBase {
       ],
     ];
   }
+
 }

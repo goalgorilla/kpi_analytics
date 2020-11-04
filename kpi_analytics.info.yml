@@ -5,3 +5,4 @@ core: 8.x
 package: Custom
 dependencies:
   - text
+  - select2:select2

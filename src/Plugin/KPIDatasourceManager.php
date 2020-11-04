@@ -2,10 +2,10 @@
 
 namespace Drupal\kpi_analytics\Plugin;
 
-use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Component\Utility\Html;
+use Drupal\Core\Plugin\DefaultPluginManager;
 
 /**
  * Provides the KPI Datasource plugin manager.
@@ -38,10 +38,11 @@ class KPIDatasourceManager extends DefaultPluginManager {
    *   their labels.
    */
   public function getOptionsList() {
-    $options = array();
+    $options = [];
     foreach ($this->getDefinitions() as $plugin_id => $plugin_definition) {
       $options[$plugin_id] = Html::escape($plugin_definition['label']);
     }
     return $options;
   }
+
 }
