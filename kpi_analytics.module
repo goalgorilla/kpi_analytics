@@ -62,7 +62,8 @@ function kpi_analytics_preprocess_block(&$variables) {
   if (
     isset($variables['content']['#block_content']) &&
     $variables['base_plugin_id'] === 'block_content' &&
-    $variables['content']['#block_content']->bundle() === 'kpi_analytics'
+    $variables['content']['#block_content']->bundle() === 'kpi_analytics' &&
+    isset($variables['elements']['kpi_analytics'])
   ) {
 
     // TODO: work on caching and preferable use the hook below to render the output.
