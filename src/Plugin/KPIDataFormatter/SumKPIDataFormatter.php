@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\kpi_analytics\Plugin\KPIVisualization\SumKPIDataFormatter.php.
- */
-
 namespace Drupal\kpi_analytics\Plugin\KPIDataFormatter;
 
 use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
@@ -20,7 +15,7 @@ use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
 class SumKPIDataFormatter extends KPIDataFormatterBase {
 
   /**
-   * @inheritdoc
+   * {@inheritdoc}
    */
   public function format(array $data) {
     $formatted_data = [];
@@ -38,7 +33,7 @@ class SumKPIDataFormatter extends KPIDataFormatterBase {
         // Count 1 for the created value.
         $formatted_data[$key] = [
           'created' => $value['created'],
-          'uids' => [$value['uid']]
+          'uids' => [$value['uid']],
         ];
       }
     }
@@ -53,4 +48,5 @@ class SumKPIDataFormatter extends KPIDataFormatterBase {
 
     return $return_formatted_data;
   }
+
 }

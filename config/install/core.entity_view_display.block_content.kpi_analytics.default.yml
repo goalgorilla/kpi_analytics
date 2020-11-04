@@ -24,6 +24,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   field_kpi_configuration: true
   field_kpi_data_formatter: true

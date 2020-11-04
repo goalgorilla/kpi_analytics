@@ -12,8 +12,12 @@ interface KPIDataFormatterInterface extends PluginInspectionInterface {
   /**
    * Format the data.
    *
-   * @param array $data Input aray
-   * @return array Output array
+   * @param array $data
+   *   Input array.
+   *
+   * @return array
+   *   Output array.
    */
   public function format(array $data);
+
 }

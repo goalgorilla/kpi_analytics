@@ -4,7 +4,7 @@
 
   Drupal.behaviors.kpiAnalyticsRenderMorris = {
     attach: function (context, settings) {
-      $(context).find('div.morris_chart').once('renderChart').each(function () {
+      $('div.morris_chart').once('renderChart').each(function () {
         var uuid = $(this).attr('id'),
             options = settings.kpi_analytics.morris.chart[uuid].options;
 
