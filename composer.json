@@ -1,7 +1,10 @@
 {
-  "name": "drupal/kpi_analytics",
-  "type": "drupal-module",
-  "description": "KPI Analytics.",
-  "homepage": "http://drupal.org/project/kpi_analytics",
-  "minimum-stability": "dev"
+    "name": "drupal/kpi_analytics",
+    "type": "drupal-module",
+    "description": "KPI Analytics.",
+    "homepage": "http://drupal.org/project/kpi_analytics",
+    "minimum-stability": "dev",
+    "require": {
+        "drupal/select2": "1.8"
+    }
 }
