@@ -33,3 +33,10 @@ function kpi_analytics_uninstall() {
 function kpi_analytics_update_8801() {
   Drupal::service('config.installer')->installDefaultConfig('module', 'kpi_analytics');
 }
+
+/**
+ * Install the 'layout_builder' module.
+ */
+function kpi_analytics_update_8802() {
+  Drupal::service('module_installer')->install(['layout_builder']);
+}

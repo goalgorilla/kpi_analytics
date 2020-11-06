@@ -146,7 +146,7 @@ class BlockCreator {
     }
 
     // Create instance of the entity beign created.
-    $this->entity = $block_storage
+    $this->entity = $this->blockStorage
       ->create($values);
 
     $this->entity->save();
