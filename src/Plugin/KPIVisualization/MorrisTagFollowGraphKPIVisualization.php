@@ -8,10 +8,10 @@ use Drupal\kpi_analytics\Plugin\KPIVisualizationBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a 'MorrisHorizontalBarGraphKPIVisualization' KPI Visualization.
+ * Provides a 'MorrisTagFollowGraphKPIVisualization' KPI Visualization.
  *
  * @KPIVisualization(
- *  id = "morris_dynamic_graph_kpi_visualization",
+ *  id = "morris_tag_follow_graph_kpi_visualization",
  *  label = @Translation("Morris tag follow graph KPI visualization"),
  * )
  */

@@ -6,7 +6,7 @@ use Drupal\kpi_analytics\Plugin\KPIDataFormatterBase;
 use Drupal\taxonomy\TermInterface;
 
 /**
- * Provides a 'AggregateKPIDataFormatter' KPI data formatter.
+ * Provides a 'TagsFollowKPIDataFormatter' KPI data formatter.
  *
  * @KPIDataFormatter(
  *  id = "tags_follow_kpi_data_formatter",
