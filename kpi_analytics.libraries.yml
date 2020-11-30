@@ -12,8 +12,8 @@ morris:
 custom_scrollbar_plugin:
   css:
     theme:
-      assets/library/custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css: {}
+      assets/library/custom-scrollbar/jquery.mCustomScrollbar.min.css: {}
   js:
-    assets/library/custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js: {}
+    assets/library/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js: {}
     assets/js/init-custom-scrollbar.js: {}
 
