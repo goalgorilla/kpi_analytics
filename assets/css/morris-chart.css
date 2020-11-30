@@ -2,7 +2,7 @@
   color: inherit !important;
   text-align: left;
 }
-.morris-hover.morris-default-style .morris-hover-point .morris-hover-marker {
+.morris-hover.morris-default-style .morris-hover-point-marker {
   border-radius: 50%;
   display: inline-block;
   height: 8px;
@@ -14,13 +14,13 @@
   margin-left: 1em;
   margin-top: 0.5em;
 }
-.morris-legend .morris-legend-point {
+.morris-legend-point {
   display: inline-block;
   font-size: 0.75rem;
   margin-right: 10px;
   vertical-align: top;
 }
-.morris-legend .morris-legend-point .morris-legend-marker {
+.morris-legend-marker {
   border-radius: 50%;
   display: inline-block;
   height: 9px;
@@ -42,11 +42,11 @@ div.morris-label-highlight {
   font-size: 13px;
   color: #777777;
 }
-.follow-changes .follow-changes-period {
+.follow-changes-period {
   font-weight: bold;
   margin-right: 10px;
 }
-.follow-changes .follow-changes-data {
+.follow-changes-data {
   position: relative;
   display: inline-block;
   line-height: 1;
@@ -56,12 +56,12 @@ div.morris-label-highlight {
   font-weight: bold;
   font-family: sans-serif;
 }
-.follow-changes .follow-changes-data.follow-changes-data-increase {
+.follow-changes-data-increase {
   color: #3c763d;
   background-color: #dff0d8;
   border-color: #d6e9c6;
 }
-.follow-changes .follow-changes-data.follow-changes-data-increase:before {
+.follow-changes-data-increase:before {
   content: "";
   position: absolute;
   top: 3px;
@@ -69,12 +69,12 @@ div.morris-label-highlight {
   border: 6px solid transparent;
   border-bottom: 7px solid #3c763d;
 }
-.follow-changes .follow-changes-data.follow-changes-data-decrease {
+.follow-changes-data-decrease {
   color: #a94442;
   background-color: #f2dede;
   border-color: #ebccd1;
 }
-.follow-changes .follow-changes-data.follow-changes-data-decrease:before {
+.follow-changes-data-decrease:before {
   content: "";
   position: absolute;
   top: 9px;
@@ -82,11 +82,15 @@ div.morris-label-highlight {
   border: 6px solid transparent;
   border-top: 7px solid #a94442;
 }
-.follow-changes .follow-changes-data.follow-changes-data-no-change {
+.follow-changes-data-no-change {
   padding-left: 10px;
-  color: #777777;
+  color: #777;
   background-color: #f3f3f3;
   border-color: #e6e6e6;
+}
+
+.chart-block--wrapper {
+  width: 1000px;
 }
 
 /*# sourceMappingURL=morris-chart.css.map */

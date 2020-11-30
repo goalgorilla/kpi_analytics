@@ -89,7 +89,7 @@ class MorrisTagFollowGraphKPIVisualization extends KPIVisualizationBase {
       $diff += $value['difference'];
     }
 
-    $increase = ($ymax * 0.15) < 1 ? 1 : floor($ymax * 0.15);
+    $increase = ($ymax * 0.3) < 1 ? 1 : floor($ymax * 0.3);
     $ymax += $increase;
 
     // Data to render and Morris options.

@@ -78,7 +78,9 @@
         };
 
         if (options.horizontal) {
-          $('#' + uuid).height(options.data.length * 60);
+          $('#' + uuid)
+            .height(options.data.length * 60)
+            .width(1000);
           addDiffText(chart);
         }
 
