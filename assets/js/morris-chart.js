@@ -31,6 +31,9 @@
           if (!this.options.horizontal) {
             xText = text.label;
           }
+          else {
+            addDiffText(this);
+          }
           element = this.raphael.text(xPos, yPos, xText)
             .attr('font-size', this.options.gridTextSize)
             .attr('font-family', this.options.gridTextFamily)
@@ -81,7 +84,6 @@
           $('#' + uuid)
             .height(options.data.length * 60)
             .width(1000);
-          addDiffText(chart);
         }
 
         var chart = Morris[options.plugin](options);
@@ -91,6 +93,9 @@
 
         if (options.horizontal) {
           addDiffText(chart);
+          $(window).resize(function () {
+            chart.options.isRenderedDiff = false;
+          })
         }
 
       });
@@ -107,8 +112,22 @@
     if (typeof chart === 'undefined') {
       return;
     }
+
+    // Check if labels exists.
+    if (
+      typeof chart.data[0].label_x === 'undefined' ||
+      typeof chart.data[0].label_y === 'undefined'
+    ) {
+      return;
+    }
+
     var data = chart.data,
       options = chart.options;
+
+    // Check if already rendered.
+    if (options.isRenderedDiff) {
+      return;
+    }
 
     // Render changed value for every bar.
     data.forEach(function (item) {
@@ -199,6 +218,9 @@
           .attr('fill', color);
       }
     })
+
+    // Already rendered.
+    chart.options.isRenderedDiff = true;
   }
 
 })(jQuery, Drupal);
