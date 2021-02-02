@@ -107,7 +107,9 @@ div.morris-label-highlight {
 }
 
 .chart-block {
-  &--wrapper {
-    width: 1000px;
+  &:not(.mCustomScrollbar) {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
   }
 }
