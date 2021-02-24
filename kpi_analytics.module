@@ -129,6 +129,18 @@ function kpi_analytics_theme($existing, $type, $theme, $path) {
         'colors' => [],
       ],
     ],
+    'kpi_analytics_morris_tag_follow_chart' => [
+      'base hook' => 'kpi_analytics_morris_chart',
+      'template' => 'morris-chart--tag-follow',
+      'variables' => [
+        'type' => NULL,
+        'uuid' => NULL,
+        'labels' => [],
+        'colors' => [],
+        'followers' => NULL,
+        'difference' => NULL,
+      ],
+    ],
   ];
 }
 

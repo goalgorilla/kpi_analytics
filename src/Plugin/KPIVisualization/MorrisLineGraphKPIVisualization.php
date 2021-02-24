@@ -43,6 +43,7 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
       'labels' => $this->labels,
       'plugin' => 'Line',
       'lineColors' => $this->colors,
+      'dataLabels' => FALSE,
     ];
 
     return [
