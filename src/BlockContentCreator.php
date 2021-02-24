@@ -87,12 +87,14 @@ class BlockContentCreator {
    * @return array
    *   Data.
    */
-  protected function getData() {
-    $source = "{$this->path}/{$this->id}.yml";
-    $content = file_get_contents($source);
-    $data = Yaml::parse($content);
+  protected function getData($reset = FALSE) {
+    if (!$this->data || $reset) {
+      $source = "{$this->path}/{$this->id}.yml";
+      $content = file_get_contents($source);
+      $this->data = Yaml::parse($content);
+    }
 
-    return $data;
+    return $this->data;
   }
 
   /**

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains kpi_analytics.module..
+ * The KPI Analytics module.
  */
 
 use Drupal\Core\Block\BlockPluginInterface;
@@ -65,7 +65,7 @@ function kpi_analytics_preprocess_block(&$variables) {
     $variables['content']['#block_content']->bundle() === 'kpi_analytics'
   ) {
 
-    // TODO: work on caching and preferable use the hook below to render the output.
+    // TODO: Work on caching and preferable use the hook below for render.
     // TODO: See how we can render this in the template without moving this.
     if (isset($variables['elements']['kpi_analytics']) && !isset($variables['content']['kpi_analytics'])) {
       $variables['content']['kpi_analytics'] = $variables['elements']['kpi_analytics'];
