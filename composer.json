@@ -6,5 +6,9 @@
     "minimum-stability": "dev",
     "require": {
         "drupal/select2": "1.8"
+    },
+    "conflict": {
+        "goalgorilla/open_social": "<9.5",
+        "drupal/social": "<9.5"
     }
 }
