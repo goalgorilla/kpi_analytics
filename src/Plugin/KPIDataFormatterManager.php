@@ -2,10 +2,10 @@
 
 namespace Drupal\kpi_analytics\Plugin;
 
-use Drupal\Core\Plugin\DefaultPluginManager;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
-use Drupal\Component\Utility\Html;
+use Drupal\Core\Plugin\DefaultPluginManager;
 
 /**
  * Provides the KPI Data Formatter plugin manager.

@@ -27,7 +27,7 @@ interface KPIVisualizationInterface extends PluginInspectionInterface {
    *   Array where each value is a label.
    *
    * @return \Drupal\kpi_analytics\Plugin\KPIVisualizationInterface
-   *   KPIVisualizationInterface object.
+   *   The KPIVisualizationInterface object.
    */
   public function setLabels(array $labels);
 
@@ -38,7 +38,7 @@ interface KPIVisualizationInterface extends PluginInspectionInterface {
    *   Array where each value is hex code.
    *
    * @return \Drupal\kpi_analytics\Plugin\KPIVisualizationInterface
-   *   KPIVisualizationInterface object.
+   *   The KPIVisualizationInterface object.
    */
   public function setColors(array $colors);
 

@@ -19,7 +19,6 @@ class ThreeMonthsTimelineKPIDataFormatter extends KPIDataFormatterBase {
    */
   public function format(array $data) {
     $months = [];
-    $date_formatter = \Drupal::service('date.formatter');
 
     for ($i = 0; $i < 4; $i++) {
       $months[] = date('Y-m', strtotime('this month - ' . $i . ' month'));
@@ -35,7 +34,7 @@ class ThreeMonthsTimelineKPIDataFormatter extends KPIDataFormatterBase {
 
         $date = $value['created'];
         $time = strtotime($value['created']);
-        $value['created'] = $date_formatter->format($time, '', 'F');
+        $value['created'] = $this->dateFormatter->format($time, '', 'F');
         $formatted_data[$date] = $value;
       }
     }
@@ -48,7 +47,7 @@ class ThreeMonthsTimelineKPIDataFormatter extends KPIDataFormatterBase {
         $value = reset($data);
         $keys = array_keys($value ?: []);
         $formatted_data[$month] = array_fill_keys($keys, 0);
-        $formatted_data[$month]['created'] = $date_formatter->format($time, '', 'F');
+        $formatted_data[$month]['created'] = $this->dateFormatter->format($time, '', 'F');
       }
 
       if ($current_date == $month) {

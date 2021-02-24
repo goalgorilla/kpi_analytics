@@ -13,21 +13,21 @@ use Symfony\Component\Yaml\Yaml;
 class BlockContentCreator {
 
   /**
-   * Entity type manager.
+   * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
-   * Block creator.
+   * The block creator service.
    *
    * @var \Drupal\kpi_analytics\BlockCreator
    */
   protected $blockCreator;
 
   /**
-   * Block content entity.
+   * The 'block_content' entity.
    *
    * @var \Drupal\block_content\Entity\BlockContent
    */
@@ -48,16 +48,24 @@ class BlockContentCreator {
   protected $id;
 
   /**
+   * The block content storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $blockContentStorage;
+
+  /**
    * BlockContentCreator constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   Entity type manager.
+   *   The entity type manager.
    * @param \Drupal\kpi_analytics\BlockCreator $block_creator
-   *   Block creator.
+   *   The block creator service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, BlockCreator $block_creator) {
     $this->entityTypeManager = $entity_type_manager;
     $this->blockCreator = $block_creator;
+    $this->blockContentStorage = $entity_type_manager->getStorage('block_content');
   }
 
   /**
@@ -76,11 +84,8 @@ class BlockContentCreator {
   /**
    * Parse data from a YAML file.
    *
-   * @param bool $reset
-   *   If TRUE, file will be parsed again.
-   *
    * @return array
-   *   Data
+   *   Data.
    */
   protected function getData($reset = FALSE) {
     if (!$this->data || $reset) {
@@ -106,16 +111,14 @@ class BlockContentCreator {
     $data = $this->getData();
     $values = $data['values'];
 
-    if ($block_content = $this->entityTypeManager->getStorage('block_content')->loadByProperties(['uuid' => $values['uuid']])) {
+    if ($block_content = $this->blockContentStorage->loadByProperties(['uuid' => $values['uuid']])) {
       $this->entity = current($block_content);
 
       return $this->entity;
     }
 
     // Create base instance of the entity being created.
-    $this->entity = $this->entityTypeManager
-      ->getStorage('block_content')
-      ->create($values);
+    $this->entity = $this->blockContentStorage->create($values);
 
     $fields = isset($data['fields']) ? $data['fields'] : [];
     // Fill fields.
@@ -135,7 +138,7 @@ class BlockContentCreator {
     $data = $this->getData();
     $values = $data['values'];
 
-    if ($block_content = $this->entityTypeManager->getStorage('block_content')->loadByProperties(['uuid' => $values['uuid']])) {
+    if ($block_content = $this->blockContentStorage->loadByProperties(['uuid' => $values['uuid']])) {
       $this->entity = current($block_content);
 
       $fields = isset($data['fields']) ? $data['fields'] : [];
@@ -157,7 +160,7 @@ class BlockContentCreator {
     $data = $this->getData();
     $values = $data['values'];
 
-    if ($block_content = $this->entityTypeManager->getStorage('block_content')->loadByProperties(['uuid' => $values['uuid']])) {
+    if ($block_content = $this->blockContentStorage->loadByProperties(['uuid' => $values['uuid']])) {
       current($block_content)->delete();
     }
   }
@@ -171,7 +174,7 @@ class BlockContentCreator {
    *   Identifier of block and filename without extension.
    *
    * @return \Drupal\block\Entity\Block
-   *   Block entity.
+   *   The block entity.
    */
   public function createBlockInstance($path, $id) {
     $block_creator = clone $this->blockCreator;

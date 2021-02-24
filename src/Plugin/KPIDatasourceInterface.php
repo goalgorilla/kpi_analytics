@@ -2,6 +2,7 @@
 
 namespace Drupal\kpi_analytics\Plugin;
 
+use Drupal\block_content\BlockContentInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 
 /**
@@ -10,8 +11,13 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 interface KPIDatasourceInterface extends PluginInspectionInterface {
 
   /**
-   * Query the data source.
+   * Query the datasource.
+   *
+   * @param \Drupal\block_content\BlockContentInterface $entity
+   *   The 'block_content' entity.
+   * @param \Drupal\block\BlockInterface|null $block
+   *   The 'block' entity.
    */
-  public function query($query);
+  public function query(BlockContentInterface $entity, $block);
 
 }

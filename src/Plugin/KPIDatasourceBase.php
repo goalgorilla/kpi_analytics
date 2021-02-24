@@ -2,12 +2,11 @@
 
 namespace Drupal\kpi_analytics\Plugin;
 
+use Drupal\block_content\BlockContentInterface;
 use Drupal\Component\Plugin\PluginBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Database\Connection;
-use Drupal\Core\Routing\RouteMatchInterface;
-
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for KPI Datasource plugins.
@@ -22,30 +21,21 @@ abstract class KPIDatasourceBase extends PluginBase implements KPIDatasourceInte
   protected $database;
 
   /**
-   * The route match.
-   *
-   * @var \Drupal\Core\Routing\RouteMatchInterface
-   */
-  protected $routeMatch;
-
-  /**
-   * KPIDatasource constructor.
+   * KPIDatasourceBase constructor.
    *
    * @param array $configuration
-   *   The given configuration.
+   *   A configuration array containing information about the plugin instance.
    * @param string $plugin_id
-   *   The given plugin id.
+   *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
-   *   The given plugin definition.
-   * @param \Drupal\Core\Database\Connection $database
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Database\Connection $connection
    *   The database connection.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $routeMatch
-   *   The route match.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $database, RouteMatchInterface $routeMatch) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Connection $connection) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->database = $database;
-    $this->routeMatch = $routeMatch;
+
+    $this->database = $connection;
   }
 
   /**
@@ -56,17 +46,15 @@ abstract class KPIDatasourceBase extends PluginBase implements KPIDatasourceInte
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('database'),
-      $container->get('current_route_match')
+      $container->get('database')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function query($query) {
-    $data = [];
-    return $data;
+  public function query(BlockContentInterface $entity, $block) {
+    return [];
   }
 
 }

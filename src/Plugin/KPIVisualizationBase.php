@@ -3,11 +3,14 @@
 namespace Drupal\kpi_analytics\Plugin;
 
 use Drupal\Component\Plugin\PluginBase;
+use Drupal\Component\Uuid\UuidInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for KPI Visualization plugins.
  */
-abstract class KPIVisualizationBase extends PluginBase implements KPIVisualizationInterface {
+abstract class KPIVisualizationBase extends PluginBase implements KPIVisualizationInterface, ContainerFactoryPluginInterface {
 
   /**
    * Contains a list with labels for chart.
@@ -22,6 +25,43 @@ abstract class KPIVisualizationBase extends PluginBase implements KPIVisualizati
    * @var array
    */
   protected $colors = [];
+
+  /**
+   * The uuid service.
+   *
+   * @var \Drupal\Component\Uuid\UuidInterface
+   */
+  protected $uuid;
+
+  /**
+   * KPIVisualizationBase constructor.
+   *
+   * @param array $configuration
+   *   The plugin configuration.
+   * @param string $plugin_id
+   *   The plugin ID.
+   * @param mixed $plugin_definition
+   *   The plugin definition.
+   * @param \Drupal\Component\Uuid\UuidInterface $uuid
+   *   The uuid service.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, UuidInterface $uuid) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+
+    $this->uuid = $uuid;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('uuid')
+    );
+  }
 
   /**
    * {@inheritdoc}

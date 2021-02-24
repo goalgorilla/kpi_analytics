@@ -4,7 +4,7 @@ dependencies:
   config:
     - block_content.type.kpi_analytics
     - field.storage.block_content.field_kpi_query
-id: block_content..type.kpi_analytics.field_kpi_query
+id: block_content.kpi_analytics.field_kpi_query
 field_name: field_kpi_query
 entity_type: block_content
 bundle: kpi_analytics

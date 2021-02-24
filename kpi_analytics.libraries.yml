@@ -8,3 +8,12 @@ morris:
       - core/jquery
       - core/drupalSettings
       - socialbase/charts
+
+custom_scrollbar_plugin:
+  css:
+    theme:
+      assets/library/custom-scrollbar/jquery.mCustomScrollbar.min.css: {}
+  js:
+    assets/library/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js: {}
+    assets/js/init-custom-scrollbar.js: {}
+

@@ -14,21 +14,21 @@ use Symfony\Component\Yaml\Yaml;
 class BlockCreator {
 
   /**
-   * Entity type manager.
+   * The entity type manager.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
-   * Config factory.
+   * The configuration factory.
    *
    * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
   protected $configFactory;
 
   /**
-   * Block entity.
+   * The block entity.
    *
    * @var \Drupal\block\Entity\Block
    */
@@ -42,7 +42,7 @@ class BlockCreator {
   protected $path;
 
   /**
-   * Identifier of a block. Should be equal to the filename.
+   * Identifier of a block. Should be equal to filename.
    *
    * @var string
    */
@@ -56,16 +56,24 @@ class BlockCreator {
   protected $data;
 
   /**
+   * The block storage.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $blockStorage;
+
+  /**
    * BlockCreator constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   Entity type manager.
+   *   The entity type manager.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   Config factory.
+   *   The configuration factory.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory) {
     $this->entityTypeManager = $entity_type_manager;
     $this->configFactory = $config_factory;
+    $this->blockStorage = $entity_type_manager->getStorage('block');
   }
 
   /**
@@ -88,7 +96,7 @@ class BlockCreator {
    *   If TRUE, file will be parsed again.
    *
    * @return array
-   *   Data
+   *   Data.
    */
   protected function getData($reset = FALSE) {
     if (!$this->data || $reset) {
@@ -125,7 +133,7 @@ class BlockCreator {
     $values = $this->getData();
 
     // If block already exists, skip creating and return an existing entity.
-    if ($block = $this->entityTypeManager->getStorage('block')->load($values['id'])) {
+    if ($block = $this->blockStorage->load($values['id'])) {
       $this->entity = $block;
 
       return $this->entity;
@@ -133,12 +141,12 @@ class BlockCreator {
 
     // Get the current theme id to place the block.
     if (empty($values['theme'])) {
-      $values['theme'] = $this->configFactory->get('system.theme')->get('default');
+      $values['theme'] = $this->configFactory->get('system.theme')
+        ->get('default');
     }
 
     // Create instance of the entity beign created.
-    $this->entity = $this->entityTypeManager
-      ->getStorage('block')
+    $this->entity = $this->blockStorage
       ->create($values);
 
     $this->entity->save();
@@ -152,7 +160,7 @@ class BlockCreator {
   public function delete() {
     $values = $this->getData();
 
-    if ($block = $this->entityTypeManager->getStorage('block')->load($values['id'])) {
+    if ($block = $this->blockStorage->load($values['id'])) {
       $block->delete();
     }
   }

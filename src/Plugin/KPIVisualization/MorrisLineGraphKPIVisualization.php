@@ -18,8 +18,7 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
    * {@inheritdoc}
    */
   public function render(array $data) {
-    $uuid_service = \Drupal::service('uuid');
-    $uuid = $uuid_service->generate();
+    $uuid = $this->uuid->generate();
 
     $xkey = 'x';
     $ykeys = ['y'];
@@ -44,6 +43,7 @@ class MorrisLineGraphKPIVisualization extends KPIVisualizationBase {
       'labels' => $this->labels,
       'plugin' => 'Line',
       'lineColors' => $this->colors,
+      'dataLabels' => FALSE,
     ];
 
     return [
